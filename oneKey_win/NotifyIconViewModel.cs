@@ -20,11 +20,26 @@ namespace oneKey_win
             {
                 return new DelegateCommand
                 {
-                    CanExecuteFunc = () => Application.Current.MainWindow == null,
+                    CanExecuteFunc = () =>
+                    {
+                        return Application.Current.MainWindow?.Visibility != Visibility.Visible;
+                    },
                     CommandAction = () =>
                     {
-                        Application.Current.MainWindow = new MainWindow();
-                        Application.Current.MainWindow.Show();
+                        if (Application.Current.MainWindow?.GetType().Name == "MainWindow")
+                        {
+                            Application.Current.MainWindow.Show();
+                            Application.Current.MainWindow.Activate();
+                        }
+                        else
+                        {
+                            Application.Current.MainWindow = new MainWindow();
+                            Application.Current.MainWindow.Show();
+                            Application.Current.MainWindow.Activate();
+
+
+                        }
+
                     }
                 };
             }
@@ -40,7 +55,7 @@ namespace oneKey_win
                 return new DelegateCommand
                 {
                     CommandAction = () => Application.Current.MainWindow.Close(),
-                    CanExecuteFunc = () => Application.Current.MainWindow != null
+                    CanExecuteFunc = () => Application.Current.MainWindow?.Visibility == Visibility.Visible
                 };
             }
         }

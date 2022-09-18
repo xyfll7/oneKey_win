@@ -16,12 +16,12 @@ namespace oneKey_win
     public partial class App : Application
     {
         private TaskbarIcon? notifyIcon;
-        private Hotkey_init hotkey_Init = new Hotkey_init();
-
+        private readonly Hotkey_init hotkey_Init = new();
+      
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            Current.MainWindow = new MainWindow();
             //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
             notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
         }
