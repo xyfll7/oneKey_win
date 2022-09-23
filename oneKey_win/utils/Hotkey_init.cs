@@ -1,5 +1,4 @@
 ﻿using GlobalHotKey;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;

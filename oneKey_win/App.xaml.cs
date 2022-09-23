@@ -15,7 +15,7 @@ namespace oneKey_win
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Current.MainWindow = new MainWindow();
+            //Current.MainWindow = new MainWindow();
             //create the notifyicon (it's a resource declared in NotifyIconResources.xaml
             notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
         }
