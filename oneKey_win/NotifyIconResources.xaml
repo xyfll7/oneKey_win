@@ -2,38 +2,44 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:tb="http://www.hardcodet.net/taskbar"
                     xmlns:local="clr-namespace:oneKey_win" 
-                    xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors">
-
+                    xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
+                   >
+                   
     <!-- the application's NotifyIcon - started from App.xaml.cs. Declares its own view model. -->
     <tb:TaskbarIcon x:Key="NotifyIcon"
-                    IconSource="Red.ico"
-                 >
+                    IconSource="Red.ico">
         <tb:TaskbarIcon.TrayPopup>
             <Border Padding="10" Background="White" CornerRadius="3">
                 <Border.DataContext>
                     <local:NotifyIconViewModel></local:NotifyIconViewModel>
                 </Border.DataContext>
-                <StackPanel >
+                <StackPanel  >
                     <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">一键助手</TextBlock>
                     <Border Padding="10">
                         <StackPanel >
-                            <StackPanel Orientation="Horizontal" >
-                                <Label Content="一键百度："  VerticalAlignment="Center"  />
-                                <TextBox  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center" IsReadOnly="True" BorderThickness="0">
-                                  <Behaviors:Interaction.Triggers>
+                            <StackPanel Orientation="Horizontal">
+                                <Label  Content="一键百度：" VerticalAlignment="Center"  >
+                                    <Behaviors:Interaction.Triggers>
+                                        <Behaviors:EventTrigger EventName="MouseDown" >
+                                            <Behaviors:InvokeCommandAction  Command="{Binding OneKeyBD_focusCommand}" CommandParameter="{Binding Source=OneKeyBD_name}"  />
+                                        </Behaviors:EventTrigger>
+                                    </Behaviors:Interaction.Triggers>
+                                </Label>
+                                <TextBox x:Name="OneKeyBD_name"  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center"  >
+                                    <Behaviors:Interaction.Triggers>
                                         <Behaviors:EventTrigger EventName="PreviewKeyDown">
                                             <Behaviors:InvokeCommandAction Command="{Binding OneKeyBDCommand}" PassEventArgsToCommand="True"/>
                                         </Behaviors:EventTrigger>
-                                  </Behaviors:Interaction.Triggers>
+                                    </Behaviors:Interaction.Triggers>
                                 </TextBox>
                             </StackPanel>
                             <Separator Background="Red"/>
                             <StackPanel Orientation="Horizontal"  >
-                                <Label Content="一键百度：" />
-                                <TextBox  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center" IsReadOnly="True" BorderThickness="0">
+                                <Label Content="一键谷歌：" VerticalAlignment="Center"/>
+                                <TextBox x:Name="OneKeyGG_name"  Text="{Binding OneKeyGG_value}" SelectionOpacity="0"  VerticalAlignment="Center" IsReadOnly="True" BorderThickness="0">
                                     <Behaviors:Interaction.Triggers>
                                         <Behaviors:EventTrigger EventName="PreviewKeyDown">
-                                            <Behaviors:InvokeCommandAction Command="{Binding OneKeyBDCommand}" PassEventArgsToCommand="True"/>
+                                            <Behaviors:InvokeCommandAction Command="{Binding OneKeyGGCommand}" PassEventArgsToCommand="True"/>
                                         </Behaviors:EventTrigger>
                                     </Behaviors:Interaction.Triggers>
                                 </TextBox>
