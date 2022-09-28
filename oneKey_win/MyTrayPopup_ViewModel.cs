@@ -2,25 +2,26 @@
 using CommunityToolkit.Mvvm.Input;
 using Hardcodet.Wpf.TaskbarNotification;
 using oneKey_win.utils;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
 namespace oneKey_win
 {
-    /// <summary>
-    /// Provides bindable properties and commands for the NotifyIcon. In this sample, the
-    /// view model is assigned to the NotifyIcon in XAML. Alternatively, the startup routing
-    /// in App.xaml.cs could have created this view model, and assigned it to the NotifyIcon.
-    /// </summary>
     [ObservableObject]
-    public partial class NotifyIconViewModel
+    internal partial class MyTrayPopup_ViewModel
     {
+        private readonly Hotkey_init hotkey_Init = new();
+        public MyTrayPopup_ViewModel()
+        {
+           
+        }
         [RelayCommand]
-        private static void ExitApplication() 
+        private static void ExitApplication()
         {
             Application.Current.Shutdown();
         }
-     
+
         [ObservableProperty]
         private string oneKeyBD_value = "Ctrl+B";
         [RelayCommand]
@@ -31,8 +32,6 @@ namespace oneKey_win
         [RelayCommand]
         private static void OneKeyBD_focus(object e)
         {
-            
-            
             var OneKeyBD_value = e;
         }
         [ObservableProperty]
@@ -40,7 +39,7 @@ namespace oneKey_win
         [RelayCommand]
         private void OneKeyGG(KeyEventArgs e)
         {
-            var notifyIcon =(TaskbarIcon?)Application.Current.Properties["notifyIcon"];
+            var notifyIcon = (TaskbarIcon?)Application.Current.Properties["notifyIcon"];
             notifyIcon?.ShowBalloonTip("sss", "sss", notifyIcon.Icon);
             OneKeyGG_value = Helper_funcs.GetHotKeyString(e);
         }

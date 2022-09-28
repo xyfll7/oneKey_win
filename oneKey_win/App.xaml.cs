@@ -10,7 +10,7 @@ namespace oneKey_win
     public partial class App : Application
     {
         public static TaskbarIcon? notifyIcon;
-        private readonly Hotkey_init hotkey_Init = new();
+       
       
         protected override void OnStartup(StartupEventArgs e)
         {

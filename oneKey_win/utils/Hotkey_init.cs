@@ -1,70 +1,89 @@
 ﻿using GlobalHotKey;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using WindowsInput;
+using static System.Net.WebRequestMethods;
 
 namespace oneKey_win.utils
 {
+    internal class HotKeyConfig
+    {
+        internal HotKeyConfig(int index)
+        {
+            this.index = index;
+        }
+        internal int index;
+        internal Key key;
+        internal ModifierKeys modifierKeys;
+        internal string? url;
+        internal bool isTrans = false;
+    }
     internal class Hotkey_init
     {
-
-        private HotKeyManager hotKeyManager_B = new HotKeyManager();
-        private HotKeyManager hotKeyManager_G = new HotKeyManager();
-        private HotKeyManager hotKeyManager_B_T = new HotKeyManager();
-        private HotKeyManager hotKeyManager_G_T = new HotKeyManager();
+        private List<HotKeyManager> hotKeyManagers = new();
+        private List<HotKeyConfig> hotKeys = new()
+        {
+            new HotKeyConfig(0)
+            {
+                key = Key.B,
+                modifierKeys = ModifierKeys.Control,
+                url = "https://www.baidu.com/s?wd=",
+            },
+            new HotKeyConfig(1)
+            {
+                key = Key.G,
+                modifierKeys = ModifierKeys.Control,
+                url = "https://www.google.com.hk/search?q=",
+            },
+            new HotKeyConfig(2)
+            {
+                key = Key.B,
+                modifierKeys = ModifierKeys.Control | ModifierKeys.Alt,
+                url = "https://fanyi.baidu.com/#zh/en/",
+                isTrans = true
+            },
+            new HotKeyConfig(3)
+            {
+                key = Key.G,
+                modifierKeys = ModifierKeys.Control | ModifierKeys.Alt,
+                url = "https://translate.google.cn/?hl=zh-CN&sl=en&tl=zh-CN&op=translate&text=",
+                isTrans = true
+            },
+        };
         public Hotkey_init()
         {
-            var hotKeyB = hotKeyManager_B.Register(Key.B, ModifierKeys.Control);
-            var hotKeyG = hotKeyManager_G.Register(Key.G, ModifierKeys.Control);
-            var hotKeyB_T = hotKeyManager_B_T.Register(Key.B, ModifierKeys.Control | ModifierKeys.Alt);
-            var hotKeyG_T = hotKeyManager_G_T.Register(Key.G, ModifierKeys.Control | ModifierKeys.Alt);
-            hotKeyManager_B.KeyPressed += HotKeyManagerPressed_B;
-            hotKeyManager_G.KeyPressed += HotKeyManagerPressed_G;
-            hotKeyManager_B_T.KeyPressed += HotKeyManagerPressed_B_T;
-            hotKeyManager_G_T.KeyPressed += HotKeyManagerPressed_G_T;
-        }
-
-
-        private void HotKeyManagerPressed_B(object? sender, KeyPressedEventArgs e)
-        {
-            if (e.HotKey.Key == Key.B)
+            foreach (var hotkey in hotKeys)
             {
-                var sim = new InputSimulator();
-                sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
-                string str = ClipboardGetText();
-                Process.Start(new ProcessStartInfo { FileName = $"https://www.baidu.com/s?wd={str}", UseShellExecute = true });
+                hotKeyManagers.Add(new HotKeyManager());
+                hotKeyManagers[hotkey.index].Register(hotkey.key,hotkey.modifierKeys);
+                hotKeyManagers[hotkey.index].KeyPressed += HotKeyManagerPressed;
             }
         }
-        private void HotKeyManagerPressed_G(object? sender, KeyPressedEventArgs e)
+       
+        private void HotKeyManagerPressed(object? sender, KeyPressedEventArgs e)
         {
-            if (e.HotKey.Key == Key.G)
+            foreach (var hotkey in hotKeys)
             {
-                var sim = new InputSimulator();
-                sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
-                string str = ClipboardGetText();
-                Process.Start(new ProcessStartInfo { FileName = $"https://www.google.com.hk/search?q={str}", UseShellExecute = true });
+               if(hotkey.key == e.HotKey.Key && hotkey.modifierKeys == e.HotKey.Modifiers)
+                {
+                    var sim = new InputSimulator();
+                    sim.Keyboard.Sleep(hotkey.isTrans ? 1000 : 0).ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C).Sleep(hotkey.isTrans ? 50 : 0);
+                    string str = ClipboardGetText();
+                    Process.Start(new ProcessStartInfo { FileName = $"{hotkey.url}{str}", UseShellExecute = true });
+                }
             }
         }
 
-        private void HotKeyManagerPressed_B_T(object? sender, KeyPressedEventArgs e)
-        {
-            var sim = new InputSimulator();
-            sim.Keyboard.Sleep(1000).ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C).Sleep(50);
-            string str = ClipboardGetText();
-            Process.Start(new ProcessStartInfo { FileName = $"https://fanyi.baidu.com/#zh/en/{str}", UseShellExecute = true });
-        }
-        private void HotKeyManagerPressed_G_T(object? sender, KeyPressedEventArgs e)
-        {
-            var sim = new InputSimulator();
-            sim.Keyboard.Sleep(1000).ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C).Sleep(50);
-            string str = ClipboardGetText();
-            Process.Start(new ProcessStartInfo { FileName = $"https://translate.google.cn/?hl=zh-CN&sl=zh-CN&tl=en&text={str}&op=translate", UseShellExecute = true });
-        }
-
-        private string ClipboardGetText()
+        private static string ClipboardGetText()
         {
             Thread.Sleep(50);
             string str = "";
