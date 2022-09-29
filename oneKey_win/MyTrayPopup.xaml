@@ -13,36 +13,18 @@
     <Border Padding="10" Background="White" CornerRadius="3">
         <StackPanel>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">一键助手</TextBlock>
-            <Border Padding="10">
-                <StackPanel >
-                    <StackPanel Orientation="Horizontal">
-                        <Label  Content="一键百度：" VerticalAlignment="Center"  >
-                            <Behaviors:Interaction.Triggers>
-                                <Behaviors:EventTrigger EventName="MouseDown" >
-                                    <Behaviors:InvokeCommandAction  Command="{Binding OneKeyBD_focusCommand}" CommandParameter="{Binding Source=OneKeyBD_name}"  />
-                                </Behaviors:EventTrigger>
-                            </Behaviors:Interaction.Triggers>
-                        </Label>
-                        <TextBox x:Name="OneKeyBD_name"  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center"  >
-                            <Behaviors:Interaction.Triggers>
-                                <Behaviors:EventTrigger EventName="PreviewKeyDown">
-                                    <Behaviors:InvokeCommandAction Command="{Binding OneKeyBDCommand}" PassEventArgsToCommand="True"/>
-                                </Behaviors:EventTrigger>
-                            </Behaviors:Interaction.Triggers>
-                        </TextBox>
-                    </StackPanel>
-                    <Separator Background="Red"/>
-                    <StackPanel Orientation="Horizontal"  >
-                        <Label Content="一键谷歌：" VerticalAlignment="Center"/>
-                        <TextBox x:Name="OneKeyGG_name"  Text="{Binding OneKeyGG_value}" SelectionOpacity="0"  VerticalAlignment="Center" IsReadOnly="True" BorderThickness="0">
-                            <Behaviors:Interaction.Triggers>
-                                <Behaviors:EventTrigger EventName="PreviewKeyDown">
-                                    <Behaviors:InvokeCommandAction Command="{Binding OneKeyGGCommand}" PassEventArgsToCommand="True"/>
-                                </Behaviors:EventTrigger>
-                            </Behaviors:Interaction.Triggers>
-                        </TextBox>
-                    </StackPanel>
-                </StackPanel>
+            <Border Padding="30">
+                <ListView ItemsSource="{Binding Path=ObservableObj}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Key}" />
+                                <TextBlock Text="{Binding ModifierKeys}" />
+                                <TextBlock Text="{Binding url}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Border>
             <TextBlock Text="退出" FontSize="11" Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center">
                          <Behaviors:Interaction.Triggers>
@@ -54,3 +36,19 @@
         </StackPanel>
     </Border>
 </UserControl>
+<!--<StackPanel Orientation="Horizontal">
+                                <Label  Content="一键百度：" VerticalAlignment="Center"  >
+                                    <Behaviors:Interaction.Triggers>
+                                        <Behaviors:EventTrigger EventName="MouseDown" >
+                                            <Behaviors:InvokeCommandAction  Command="{Binding OneKeyBD_focusCommand}" CommandParameter="{Binding Source=OneKeyBD_name}"  />
+                                        </Behaviors:EventTrigger>
+                                    </Behaviors:Interaction.Triggers>
+                                </Label>
+                                <TextBox x:Name="OneKeyBD_name"  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center"  >
+                                    <Behaviors:Interaction.Triggers>
+                                        <Behaviors:EventTrigger EventName="PreviewKeyDown">
+                                            <Behaviors:InvokeCommandAction Command="{Binding OneKeyBDCommand}" PassEventArgsToCommand="True"/>
+                                        </Behaviors:EventTrigger>
+                                    </Behaviors:Interaction.Triggers>
+                                </TextBox>
+                            </StackPanel>-->

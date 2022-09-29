@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
 
 namespace oneKey_win.utils
 {
@@ -43,6 +46,23 @@ namespace oneKey_win.utils
                 return "";
             }
             return $"{modifiers}+{key}";
+        }
+        public static string ClipboardGetText()
+        {
+            Thread.Sleep(50);
+            string str = "";
+            if (Clipboard.ContainsText())
+            {
+                try { str = Clipboard.GetText(); }
+                catch (COMException) { }
+                finally
+                {
+                    Thread.Sleep(20);
+                    try { str = Clipboard.GetText(); }
+                    catch (COMException) { str = "剪切板被占用"; }
+                }
+            }
+            return str.Trim().Replace("  ", "");
         }
     }
 }

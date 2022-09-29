@@ -11,94 +11,38 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
 using WindowsInput;
-using static System.Net.WebRequestMethods;
+
 
 namespace oneKey_win.utils
 {
     internal class HotKeyConfig
     {
-        internal HotKeyConfig(int index)
+        public Key key { get; set; }
+        public string Key
         {
-            this.index = index;
+            get { return key.ToString(); }
         }
-        internal int index;
-        internal Key key;
-        internal ModifierKeys modifierKeys;
-        internal string? url;
-        internal bool isTrans = false;
-    }
-    internal class Hotkey_init
-    {
-        private List<HotKeyManager> hotKeyManagers = new();
-        private List<HotKeyConfig> hotKeys = new()
+        public ModifierKeys modifierKeys { get; set; }
+        public string ModifierKeys
         {
-            new HotKeyConfig(0)
-            {
-                key = Key.B,
-                modifierKeys = ModifierKeys.Control,
-                url = "https://www.baidu.com/s?wd=",
-            },
-            new HotKeyConfig(1)
-            {
-                key = Key.G,
-                modifierKeys = ModifierKeys.Control,
-                url = "https://www.google.com.hk/search?q=",
-            },
-            new HotKeyConfig(2)
-            {
-                key = Key.B,
-                modifierKeys = ModifierKeys.Control | ModifierKeys.Alt,
-                url = "https://fanyi.baidu.com/#zh/en/",
-                isTrans = true
-            },
-            new HotKeyConfig(3)
-            {
-                key = Key.G,
-                modifierKeys = ModifierKeys.Control | ModifierKeys.Alt,
-                url = "https://translate.google.cn/?hl=zh-CN&sl=en&tl=zh-CN&op=translate&text=",
-                isTrans = true
-            },
-        };
-        public Hotkey_init()
-        {
-            foreach (var hotkey in hotKeys)
-            {
-                hotKeyManagers.Add(new HotKeyManager());
-                hotKeyManagers[hotkey.index].Register(hotkey.key,hotkey.modifierKeys);
-                hotKeyManagers[hotkey.index].KeyPressed += HotKeyManagerPressed;
-            }
+            get { return modifierKeys.ToString(); }
         }
-       
-        private void HotKeyManagerPressed(object? sender, KeyPressedEventArgs e)
+        public string? url { get; set; }
+        public bool isTrans { get; set; } = false;
+        private HotKeyManager hotKeyManager { get; set; } = new();
+        public HotKeyConfig init()
         {
-            foreach (var hotkey in hotKeys)
-            {
-               if(hotkey.key == e.HotKey.Key && hotkey.modifierKeys == e.HotKey.Modifiers)
-                {
-                    var sim = new InputSimulator();
-                    sim.Keyboard.Sleep(hotkey.isTrans ? 1000 : 0).ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C).Sleep(hotkey.isTrans ? 50 : 0);
-                    string str = ClipboardGetText();
-                    Process.Start(new ProcessStartInfo { FileName = $"{hotkey.url}{str}", UseShellExecute = true });
-                }
-            }
+            this.hotKeyManager.Register(this.key, this.modifierKeys);
+            this.hotKeyManager.KeyPressed += HotKeyManagerPressed;
+            return this;
         }
 
-        private static string ClipboardGetText()
+        private void HotKeyManagerPressed(object? sender, KeyPressedEventArgs e)
         {
-            Thread.Sleep(50);
-            string str = "";
-            if (Clipboard.ContainsText())
-            {
-                try { str = Clipboard.GetText(); }
-                catch (COMException) { }
-                finally
-                {
-                    Thread.Sleep(20);
-                    try { str = Clipboard.GetText(); }
-                    catch (COMException) { str = "剪切板被占用"; }
-                }
-            }
-            return str.Trim().Replace("  ", "");
+            var sim = new InputSimulator();
+            sim.Keyboard.Sleep(this.isTrans ? 1000 : 0).ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C).Sleep(this.isTrans ? 50 : 0);
+            string str = Helper_funcs.ClipboardGetText();
+            Process.Start(new ProcessStartInfo { FileName = $"{this.url}{str}", UseShellExecute = true });
         }
     }
 }
