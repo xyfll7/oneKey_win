@@ -7,7 +7,7 @@ namespace oneKey_win.utils
 {
     internal class Helper_funcs
     {
-        public static string GetHotKeyString(KeyEventArgs e)
+        public static (ModifierKeys,Key)? GetHotKey_Key(KeyEventArgs e)
         {
             // Don't let the event pass further
             // because we don't want standard textbox shortcuts working
@@ -27,7 +27,7 @@ namespace oneKey_win.utils
             if (modifiers == ModifierKeys.None &&
                 (key == Key.Delete || key == Key.Back || key == Key.Escape))
             {
-                return "";
+                return null;
             }
 
             // If no actual key was pressed - return
@@ -43,9 +43,9 @@ namespace oneKey_win.utils
                 key == Key.OemClear ||
                 key == Key.Apps)
             {
-                return "";
+                return null;
             }
-            return $"{modifiers}+{key}";
+            return (modifiers, key);
         }
         public static string ClipboardGetText()
         {

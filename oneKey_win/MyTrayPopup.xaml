@@ -7,19 +7,25 @@
              mc:Ignorable="d" 
              xmlns:Behaviors="http://schemas.microsoft.com/xaml/behaviors"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <local:MyTrayPopup_ViewModel></local:MyTrayPopup_ViewModel>
+    <UserControl.DataContext >
+        <local:MyTrayPopup_ViewModel x:Name="MyTrayPopup_ViewModel"></local:MyTrayPopup_ViewModel>
     </UserControl.DataContext>
     <Border Padding="10" Background="White" CornerRadius="3">
         <StackPanel>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">一键助手</TextBlock>
             <Border Padding="30">
-                <ListView ItemsSource="{Binding Path=ObservableObj}">
+                <ListView ItemsSource="{Binding ObservableObj}">
                     <ListView.ItemTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Key}" />
-                                <TextBlock Text="{Binding ModifierKeys}" />
+                                <TextBox Text="{Binding HotKeyName}" SelectionOpacity="0"  VerticalAlignment="Center"  IsReadOnly="True" BorderThickness="0">
+                                   
+                                    <Behaviors:Interaction.Triggers>
+                                        <Behaviors:EventTrigger EventName="PreviewKeyDown">
+                                            <Behaviors:InvokeCommandAction Command="{Binding ElementName=MyTrayPopup_ViewModel, Path=AddHotKeyCommand }" PassEventArgsToCommand="True"/>
+                                        </Behaviors:EventTrigger>
+                                    </Behaviors:Interaction.Triggers>
+                                </TextBox>
                                 <TextBlock Text="{Binding url}" />
                             </StackPanel>
                         </DataTemplate>
@@ -36,19 +42,4 @@
         </StackPanel>
     </Border>
 </UserControl>
-<!--<StackPanel Orientation="Horizontal">
-                                <Label  Content="一键百度：" VerticalAlignment="Center"  >
-                                    <Behaviors:Interaction.Triggers>
-                                        <Behaviors:EventTrigger EventName="MouseDown" >
-                                            <Behaviors:InvokeCommandAction  Command="{Binding OneKeyBD_focusCommand}" CommandParameter="{Binding Source=OneKeyBD_name}"  />
-                                        </Behaviors:EventTrigger>
-                                    </Behaviors:Interaction.Triggers>
-                                </Label>
-                                <TextBox x:Name="OneKeyBD_name"  Text="{Binding OneKeyBD_value}" SelectionOpacity="0"  VerticalAlignment="Center"  >
-                                    <Behaviors:Interaction.Triggers>
-                                        <Behaviors:EventTrigger EventName="PreviewKeyDown">
-                                            <Behaviors:InvokeCommandAction Command="{Binding OneKeyBDCommand}" PassEventArgsToCommand="True"/>
-                                        </Behaviors:EventTrigger>
-                                    </Behaviors:Interaction.Triggers>
-                                </TextBox>
-                            </StackPanel>-->
+
