@@ -1,11 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:tb="http://www.hardcodet.net/taskbar"
-                    xmlns:local="clr-namespace:oneKey_win" 
-                   >
-    <tb:TaskbarIcon x:Key="NotifyIcon" IconSource="Red.ico">
+                    xmlns:local="clr-namespace:oneKey_win">
+    <tb:TaskbarIcon x:Key="NotifyIcon" IconSource="../Red.ico">
         <tb:TaskbarIcon.TrayPopup>
-            <local:MyTrayPopup></local:MyTrayPopup>
+            <local:MyTrayPopup_Control></local:MyTrayPopup_Control>
         </tb:TaskbarIcon.TrayPopup>
     </tb:TaskbarIcon>
 </ResourceDictionary>

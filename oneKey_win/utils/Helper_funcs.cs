@@ -22,13 +22,14 @@ namespace oneKey_win.utils
             {
                 key = e.SystemKey;
             }
-
+            if (modifiers == ModifierKeys.None) return null;
             // Pressing delete, backspace or escape without modifiers clears the current value
             if (modifiers == ModifierKeys.None &&
                 (key == Key.Delete || key == Key.Back || key == Key.Escape))
             {
                 return null;
             }
+          
 
             // If no actual key was pressed - return
             if (key == Key.LeftCtrl ||

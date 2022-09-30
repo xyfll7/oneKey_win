@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
 using oneKey_win.utils;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace oneKey_win
@@ -13,7 +14,7 @@ namespace oneKey_win
     internal partial class MyTrayPopup_ViewModel
     {
         [ObservableProperty]
-        private ObservableCollection<HotKeyConfig> observableObj = new()
+        private ObservableCollection<HotKeyConfig> hotKeyCollection = new()
         {
             new HotKeyConfig()
             { key = Key.B, modifierKeys = ModifierKeys.Control, url = "https://www.baidu.com/s?wd=",}.init(),
@@ -24,23 +25,51 @@ namespace oneKey_win
             new HotKeyConfig()
             { key = Key.G, modifierKeys = ModifierKeys.Control | ModifierKeys.Alt, url = "https://translate.google.cn/?hl=zh-CN&sl=en&tl=zh-CN&op=translate&text=",isTrans = true}.init(),
         };
+        [RelayCommand]
+        private void ChangeHotKey(ItemTappedEventArgs e)
+        {
+                var hotkey = Helper_funcs.GetHotKey_Key(e.keyEventArgs);
+                if (hotkey != null)
+                {
+                    HotKeyCollection[0].Dispose();
+                    var a = HotKeyCollection;
+                    HotKeyCollection[0] = new HotKeyConfig()
+                    {
+                        key = hotkey.Value.Item2,
+                        modifierKeys = hotkey.Value.Item1,
+                        url = "https://www.qq.com/s?wd="
+                    }.init();
+            }
+        }
         // 新增快捷键
         [RelayCommand]
-        private void AddHotKey(KeyEventArgs e)
+        private void AddHotKey()
         {
-            var hotKey_key = Helper_funcs.GetHotKey_Key(e);
-            if (hotKey_key != null)
-            {
-                ObservableObj.Add(new HotKeyConfig()
-                { key = hotKey_key.Value.Item2, modifierKeys = hotKey_key.Value.Item1, url = "https://www.qq.com/", }.init());
-            };
-
+            HotKeyCollection.Add(new HotKeyConfig()
+            { key = Key.None, modifierKeys = ModifierKeys.None, url = "", });
         }
         // 退出
         [RelayCommand]
         private static void ExitApplication()
         {
             Application.Current.Shutdown();
+        }
+    }
+
+    public class ItemTappedEventArgs 
+    {
+        public  KeyEventArgs? keyEventArgs { get; set; }
+        public  HotKeyConfig? hotKeyConfig { get; set; }
+    }
+    public class ItemTappedEventArgsConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return new ItemTappedEventArgs() { keyEventArgs = value as KeyEventArgs, hotKeyConfig = parameter as HotKeyConfig };
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

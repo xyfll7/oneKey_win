@@ -8,15 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="MainWindow.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Red.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="MainWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>

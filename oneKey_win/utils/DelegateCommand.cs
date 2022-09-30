@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace oneKey_win
+namespace oneKey_win.utils
 {
     /// <summary>
     /// Simplistic delegate command for the demo.

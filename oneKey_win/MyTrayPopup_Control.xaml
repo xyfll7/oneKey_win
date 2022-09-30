@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="oneKey_win.MyTrayPopup_Control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:oneKey_win"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" >
+    <StackPanel>
+        <StackPanel.DataContext >
+            <local:MyTrayPopup_ViewModel  x:Name="MyTrayPopup_V"/>
+        </StackPanel.DataContext>
+        <Border Padding="10" Background="White" CornerRadius="3">
+            <StackPanel>
+                <StackPanel.Resources>
+                    <ResourceDictionary>
+                        <local:ItemTappedEventArgsConverter x:Key="itemTappedEventArgsConverter" />
+                    </ResourceDictionary>
+                </StackPanel.Resources>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">一键助手</TextBlock>
+                <ListView ItemsSource="{Binding HotKeyCollection}" Padding="5" Margin="10"    BorderThickness="0" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemTemplate >
+                        <DataTemplate >
+                            <StackPanel >
+                                <Border Background="WhiteSmoke" CornerRadius="3"  HorizontalAlignment="Center" Margin="0 3">
+                                    <StackPanel  >
+                                        <TextBox Text="{Binding HotKeyName, Mode=OneWay}" BorderThickness="0" Padding="10 3 10 3" Background="Transparent"  HorizontalAlignment="Center" IsReadOnly="True" >
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="PreviewKeyDown">
+                                                    <i:InvokeCommandAction Command="{Binding ElementName=MyTrayPopup_V, Path=ChangeHotKeyCommand}" 
+                                                     EventArgsConverter="{StaticResource itemTappedEventArgsConverter}" EventArgsConverterParameter="{Binding HotKeyObj}"  />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </TextBox>
+                                        <TextBox Style="{StaticResource WatermarkedTextBox}"  Tag="请输入网址" Text="{Binding url, Mode=TwoWay}" BorderThickness="0" Padding="10 3 10 3" MaxWidth="250"  Background="Transparent" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <TextBlock Text="+新增+" FontSize="11" Margin="0 0 0 10"  Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding AddHotKeyCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+                <TextBlock Text="退出" FontSize="11" Foreground="DimGray" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding ExitApplicationCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+
+</UserControl>

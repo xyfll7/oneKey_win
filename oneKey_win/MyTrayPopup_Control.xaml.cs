@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace oneKey_win
 {
     /// <summary>
-    /// MyTrayPopup.xaml 的交互逻辑
+    /// MyTrayPopup_Control.xaml 的交互逻辑
     /// </summary>
-    public partial class MyTrayPopup : UserControl
+    public partial class MyTrayPopup_Control : UserControl
     {
-        public MyTrayPopup()
+        public MyTrayPopup_Control()
         {
             InitializeComponent();
         }

@@ -1,14 +1,14 @@
 ﻿<Application x:Class="oneKey_win.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:oneKey_win"
-       
+             DispatcherUnhandledException="Application_DispatcherUnhandledException"
              ShutdownMode="OnExplicitShutdown">
-    <!--DispatcherUnhandledException="Application_DispatcherUnhandledException"-->
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="NotifyIconResources.xaml" />
+                <ResourceDictionary Source="dictionary/NotifyIconResources.xaml" />
+                <ResourceDictionary Source="dictionary/WatermarkResource.xaml" />
+                <ResourceDictionary Source="dictionary/ListviewStyleResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
