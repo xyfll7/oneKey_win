@@ -17,6 +17,8 @@ namespace oneKey_win
         private ObservableCollection<HotKeyConfig> hotKeyCollection = new()
         {
             new HotKeyConfig()
+            { key = Key.Y, modifierKeys = ModifierKeys.Control, url = "https://dict.youdao.com/result?lang=en&word=",}.init(),
+            new HotKeyConfig()
             { key = Key.B, modifierKeys = ModifierKeys.Control, url = "https://www.baidu.com/s?wd=",}.init(),
             new HotKeyConfig()
             { key = Key.G, modifierKeys = ModifierKeys.Control, url = "https://www.google.com.hk/search?q=", }.init(),
