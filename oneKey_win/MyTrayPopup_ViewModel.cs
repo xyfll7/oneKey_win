@@ -16,16 +16,17 @@ namespace oneKey_win
         [ObservableProperty]
         private ObservableCollection<HotKeyConfig> hotKeyCollection = new()
         {
+            
+            new HotKeyConfig()
+            { key = Key.O, modifierKeys = ModifierKeys.Control, url = "https://dict.eudic.net/dicts/en/",}.init(),
             new HotKeyConfig()
             { key = Key.Y, modifierKeys = ModifierKeys.Control, url = "https://dict.youdao.com/result?lang=en&word=",}.init(),
             new HotKeyConfig()
-            { key = Key.B, modifierKeys = ModifierKeys.Control, url = "https://www.baidu.com/s?wd=",}.init(),
+            { key = Key.B, modifierKeys = ModifierKeys.Control, url = "https://www.bing.com/search?&mkt=zh-CN&q=",}.init(),
             new HotKeyConfig()
-            { key = Key.G, modifierKeys = ModifierKeys.Control, url = "https://www.google.com.hk/search?q=", }.init(),
+            { key = Key.G, modifierKeys = ModifierKeys.Control, url = "https://translate.google.com/?hl=zh-CN&sl=auto&tl=en&op=translate&text=", }.init(),
             new HotKeyConfig()
-            { key = Key.B, modifierKeys = ModifierKeys.Control | ModifierKeys.Alt, url = "https://fanyi.baidu.com/#zh/en/",isTrans = true}.init(),
-            new HotKeyConfig()
-            { key = Key.G, modifierKeys = ModifierKeys.Control | ModifierKeys.Alt, url = "https://translate.google.cn/?hl=zh-CN&sl=en&tl=zh-CN&op=translate&text=",isTrans = true}.init(),
+            { key = Key.G, modifierKeys = ModifierKeys.Control | ModifierKeys.Alt, url = " https://www.google.com.hk/search?q=",isTrans = true}.init(),
         };
         [RelayCommand]
         private void ChangeHotKey(ItemTappedEventArgs e)
